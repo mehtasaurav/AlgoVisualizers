@@ -1,0 +1,8 @@
+1) Download and extract the JavaFx archive file from https://gluonhq.com/products/javafx/ according to OS compatibility.
+2) Create a Environment variable and add the lib folder(folder that was extracted from javaFX) path to system variable path and give any name best of you choice as variable name.
+3) Create a .java file and start writing Java/JavaFx code.
+4) Save the file and open terminal on that same path.
+5) At compile time and run time we need to specify the path to javafx lib as module path. Use the same system variable path to specify this.
+6) We also need to the modules we will be using from that path.
+7) For compile time : C:\Users\I589407\Documents\Anti-silos\microlysis>javac --module-path %JavaFxPath% --add-modules javafx.controls,javafx.fxml HelloFX.java
+8) For run time : C:\Users\I589407\Documents\Anti-silos\microlysis>java --module-path %JavaFxPath% --add-modules javafx.controls HelloFX.java
