@@ -1,6 +1,6 @@
 
-![image](https://github.com/user-attachments/assets/059e8260-b672-4d7f-b5e1-c37caa69a505)
 # JavaFX Algorithm Visualizer
+![image](https://github.com/user-attachments/assets/059e8260-b672-4d7f-b5e1-c37caa69a505)
 
 ## Purpose  
 The purpose of this project is **nothing specific**. I am creating it just to have hands-on experience with **JavaFX features**. I still have a lot to learn and explore.
