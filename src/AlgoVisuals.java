@@ -52,8 +52,8 @@ public class BaseClass extends Application {
             String inputText = inputField.getText();
             if (!inputText.isEmpty()) {
                 inputArray = Arrays.stream(inputText.split(","))
-                                   .mapToInt(Integer::parseInt)
-                                   .toArray();
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
                 generateGraphs();
             }
         });
@@ -72,7 +72,7 @@ public class BaseClass extends Application {
         tilePane.setHgap(10);
         tilePane.setVgap(10);
 
-        String[] algorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Quick Sort"};
+        String[] algorithms = { "Bubble Sort", "Selection Sort", "Insertion Sort", "Quick Sort" };
         for (String algorithm : algorithms) {
             Pane pane = createSortingBox(algorithm);
             algorithmPanes.put(algorithm, pane);
@@ -141,16 +141,61 @@ public class BaseClass extends Application {
                 animateSorting(algorithmName, stackTrace);
                 break;
             }
-            case "Selection Sort":
-                // Add selection sort logic
+            case "Selection Sort": {
+                List<Trace> stackTrace = selectionSort();
+                animateSorting(algorithmName, stackTrace);
                 break;
-            case "Insertion Sort":
-                // Add insertion sort logic
+            }
+            case "Insertion Sort": {
+                List<Trace> stackTrace = insertionSort();
+                animateSorting(algorithmName, stackTrace);
                 break;
-            case "Quick Sort":
-                // Add quick sort logic
+            }
+            case "Quick Sort": {
+                List<Trace> stackTrace = quickSort();
+                animateSorting(algorithmName, stackTrace);
                 break;
+            }
         }
+    }
+
+    private List<Trace> quickSort() {
+        List<Trace> trace = new ArrayList<>();
+        int[] values = Arrays.copyOf(inputArray, inputArray.length);
+        quickSortHelper(values, 0, values.length - 1, trace);
+        return trace;
+    }
+
+    private void quickSortHelper(int[] arr, int low, int high, List<Trace> trace) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high, trace);
+            quickSortHelper(arr, low, pivotIndex - 1, trace);
+            quickSortHelper(arr, pivotIndex + 1, high, trace);
+        }
+    }
+
+    private int partition(int[] arr, int low, int high, List<Trace> trace) {
+        int pivot = arr[high]; // Choose last element as pivot
+        int i = low - 1; // Index of smaller element
+
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                // Swap arr[i] and arr[j]
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                trace.add(new Trace(i, j)); // Record swap
+            }
+        }
+
+        // Swap pivot to its final position
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        trace.add(new Trace(i + 1, high)); // Record pivot swap
+
+        return i + 1;
     }
 
     private List<Trace> bubbleSort() {
@@ -165,6 +210,44 @@ public class BaseClass extends Application {
                     values[j] = values[j + 1];
                     values[j + 1] = temp;
                 }
+            }
+        }
+        return trace;
+    }
+
+    private List<Trace> selectionSort() {
+        List<Trace> trace = new ArrayList<>();
+        int[] values = Arrays.copyOf(inputArray, inputArray.length);
+
+        for (int i = 0; i < values.length; i++) {
+            int smallestIndex = i;
+            for (int j = i + 1; j < values.length; j++) {
+                if (values[j] < values[smallestIndex]) {
+                    smallestIndex = j;
+                }
+            }
+            trace.add(new Trace(i, smallestIndex));
+            int temp = values[i];
+            values[i] = values[smallestIndex];
+            values[smallestIndex] = temp;
+        }
+        return trace;
+    }
+
+    private List<Trace> insertionSort() {
+        List<Trace> trace = new ArrayList<>();
+        int[] values = Arrays.copyOf(inputArray, inputArray.length);
+
+        for (int i = 1; i < values.length; i++) {
+            int j = i;
+            // Shift elements left until the key is in its correct position
+            while (j > 0 && values[j - 1] > values[j]) {
+                // Swap elements at j-1 and j
+                int temp = values[j];
+                values[j] = values[j - 1];
+                values[j - 1] = temp;
+                trace.add(new Trace(j - 1, j)); // Record swap
+                j--;
             }
         }
         return trace;
